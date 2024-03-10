@@ -2,16 +2,19 @@
 
 ### Overview
 
-Edge detection, though well explored, is still not a completely solved or optimized task. Since edges in an image are subjective and can be examined through changes in depth, texture, brightness, and color, it is often observed that even well-known edge detection techniques fail to discover all relevant edges or add redundant/noisy edges to many image styles. This leads to the motivation to use techniques that use a combination of different baselines. The premise of this project is exploring probability-based edge detection, described in detail on [this webpage](https://cmsc733.github.io/2022/hw/hw0/). Computing the PbLite edges uses gradients in texture, brightness, and color to assign probabilities to the presence of an edge detected by Canny and Sobel edge detection baselines. The following sections go over the various steps used in this pipeline tested on ten sample images to evaluate performance.
+Edge detection, though well explored, is still not a completely solved or optimized task. Since edges in an image are subjective and can be examined through changes in depth, texture, brightness, and color, it is often observed that even well-known edge detection techniques fail to discover all relevant edges or add redundant/noisy edges to many image styles. This leads to the motivation to use techniques that use a combination of different baselines. The premise of this project is to explore probability-based edge detection, described in detail on [this webpage](https://cmsc733.github.io/2022/hw/hw0/). Computing the PbLite edges uses gradients in texture, brightness, and color to assign probabilities to the presence of an edge detected by Canny and Sobel edge detection baselines. The following sections go over the various steps used in this pipeline tested on ten sample images to evaluate performance. A high-level overview of the overall process is shown below.
+
+<p align="center">
+  <img src="pblite_workflow.png"/>
+</p>
 
 ### Filter Banks
 
 The first step in generating the gradients in the image texture is obtaining a set of filters called the filter bank, which collectively work to obtain different texture features on convolving with the grayscale version of the original image. The various filters used to make the filter bank are described in the following subsections.
 
-
 #### Derivative of Gaussian (DoG) Filters
 
-The basic filters used in edge detection include the DoG Filter that is obtained by convolving a Gaussian Filter (which smooths the image) with Sobel Filters (which calculates intensity gradients in the horizontal and vertical directions). By rotating the basic DoG filter to different orientations at different filter sizes and scales (standard deviation of the Gaussian smoothing function on a pixel scale), we get a set of oriented DoG filters that are useful in bringing about different scales of gradient changes in various directions of the image. A total of 32 oriented DoG Filters are used as shown below. Two scales, sigma = [2,3] and sixteen orientations (equally spaced angles starting from 0 radians) are used for generating the DoG Filters of size 21*21.
+The basic filters used in edge detection include the DoG Filter which is obtained by convolving a Gaussian Filter (which smooths the image) with Sobel Filters (which calculates intensity gradients in the horizontal and vertical directions). By rotating the basic DoG filter to different orientations at different filter sizes and scales (standard deviation of the Gaussian smoothing function on a pixel scale), we get a set of oriented DoG filters that are useful in bringing about different scales of gradient changes in various directions of the image. A total of 32 oriented DoG Filters are used as shown below. Two scales, sigma = [2,3] and sixteen orientations (equally spaced angles starting from 0 radians) are used for generating the DoG Filters of size 21*21.
 
 <p align="center">
   <img src="Code/results/filters/DoG.png"/>
@@ -121,4 +124,8 @@ Using the gradient maps of each of the three (texton, brightness, and color) map
   <img src="Code/results/pblite_images/10.png"/>
 </p>
 
-You can refer more pb-lite and intermediate step outputs in the `Code/results` directory as well as more mathematical and implementation details in `Report.pdf`.
+***********************************************************************************************************
+
+You can refer to more pb-lite and intermediate step outputs in the `Code/results` directory as well as more mathematical and implementation details in `Report.pdf`.
+
+This project was made possible with the guidance and support of Dr. Yiannis Aloimonos from the University of Maryland. The images for the workflow were taken from [this](https://cmsc733.github.io/2022/hw/hw0/) webpage.
